@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         // A title helps distinguish your app when running on a device
         title: 'Minimalist Task Manager',
-
+        debugShowCheckedModeBanner: false, // Disable debug banner
         // Define global theme settings
         theme: ThemeData(
           primarySwatch: Colors.blue,

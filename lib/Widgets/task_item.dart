@@ -9,7 +9,6 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access your provider and its tasks list
     final taskProvider = context.watch<TaskProvider>();
     final task = taskProvider.tasks[index];
 
@@ -31,14 +30,23 @@ class TaskItem extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Task name with optional strikethrough
-          Text(
-            taskName,
-            style: TextStyle(
-              fontSize: 16.0,
-              decoration: isCompleted ? TextDecoration.lineThrough : null,
+          // Reorder handle inside the task container
+          ReorderableDragStartListener(
+            index: index,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Icon(Icons.drag_handle, color: Colors.grey),
+            ),
+          ),
+          const SizedBox(width: 16.0),
+          Expanded(
+            child: Text(
+              taskName,
+              style: TextStyle(
+                fontSize: 16.0,
+                decoration: isCompleted ? TextDecoration.lineThrough : null,
+              ),
             ),
           ),
           Row(
@@ -46,17 +54,12 @@ class TaskItem extends StatelessWidget {
               // Toggling the checkbox
               Checkbox(
                 value: isCompleted,
-                onChanged: (value) {
-                  // Toggle completion status via Provider
-                  context.read<TaskProvider>().toggleTask(index);
-                },
+                onChanged: (_) => context.read<TaskProvider>().toggleTask(index),
               ),
               // Deleting the task
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: () {
-                  context.read<TaskProvider>().deleteTask(index);
-                },
+                onPressed: () => context.read<TaskProvider>().deleteTask(index),
               ),
             ],
           ),

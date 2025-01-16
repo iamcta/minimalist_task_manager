@@ -21,9 +21,9 @@ class TaskList extends StatelessWidget {
       // Build each list item with a key and a TaskItem
       children: [
         for (int i = 0; i < tasks.length; i++)
-          ListTile(
-            key: ValueKey(tasks[i]),  // A key helps Flutter track each item
-            title: TaskItem(index: i), 
+          KeyedSubtree( // Use KeyedSubtree to avoid ListTile’s built-in drag handle
+            key: ValueKey(tasks[i]),
+            child: TaskItem(index: i), // Render your custom TaskItem
           ),
       ],
     );
