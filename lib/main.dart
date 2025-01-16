@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
+import 'providers/task_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +12,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(fontFamily: 'Roboto'),
+    return ChangeNotifierProvider(
+      // Create and provide a single instance of TaskProvider throughout the app
+      create: (_) => TaskProvider(),
+      child: MaterialApp(
+        // A title helps distinguish your app when running on a device
+        title: 'Minimalist Task Manager',
+
+        // Define global theme settings
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(fontFamily: 'Roboto'),
+          ),
         ),
+
+        // The first screen of your app
+        home: const HomeScreen(),
       ),
-      home: HomeScreen(),
     );
   }
 }

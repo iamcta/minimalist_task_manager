@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import '../../utils/global_styles.dart';
-class TaskItem extends StatelessWidget {
-  final String taskName;
-  final bool isCompleted;
-  final VoidCallback onToggle;
-  final VoidCallback onDelete;
+import 'package:provider/provider.dart';
+import '../providers/task_provider.dart';
 
-  const TaskItem({
-    super.key,
-    required this.taskName,
-    required this.onToggle,
-    required this.onDelete,
-    this.isCompleted = false,
-  });
+class TaskItem extends StatelessWidget {
+  final int index;
+
+  const TaskItem({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
+    // Access your provider and its tasks list
+    final taskProvider = context.watch<TaskProvider>();
+    final task = taskProvider.tasks[index];
+
+    final String taskName = task['name'];
+    final bool isCompleted = task['isCompleted'];
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 4,
@@ -33,6 +33,7 @@ class TaskItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Task name with optional strikethrough
           Text(
             taskName,
             style: TextStyle(
@@ -42,15 +43,20 @@ class TaskItem extends StatelessWidget {
           ),
           Row(
             children: [
+              // Toggling the checkbox
               Checkbox(
                 value: isCompleted,
                 onChanged: (value) {
-                  onToggle();
+                  // Toggle completion status via Provider
+                  context.read<TaskProvider>().toggleTask(index);
                 },
               ),
+              // Deleting the task
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: onDelete, // Call the delete callback
+                onPressed: () {
+                  context.read<TaskProvider>().deleteTask(index);
+                },
               ),
             ],
           ),

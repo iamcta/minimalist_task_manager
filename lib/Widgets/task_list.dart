@@ -1,39 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/task_provider.dart';
 import 'task_item.dart';
 
 class TaskList extends StatelessWidget {
-  final List<Map<String, dynamic>> tasks;
-  final Function(int) toggleTask;
-  final Function(int) deleteTask; // Add deleteTask callback
+  const TaskList({super.key});
 
-  const TaskList({
-    super.key,
-    required this.tasks,
-    required this.toggleTask,
-    required this.deleteTask, // Add to constructor
-  });
-@override
-Widget build(BuildContext context) {
-  return ReorderableListView(
-    onReorder: (oldIndex, newIndex) {
-      if (newIndex > oldIndex) {
-        newIndex--;
-      }
-      final item = tasks.removeAt(oldIndex);
-      tasks.insert(newIndex, item);
-    },
-    children: [
-      for (int index = 0; index < tasks.length; index++)
-        ListTile(
-          key: ValueKey(tasks[index]),
-          title: TaskItem(
-            taskName: tasks[index]['name'],
-            isCompleted: tasks[index]['isCompleted'],
-            onToggle: () => toggleTask(index),
-            onDelete: () => deleteTask(index),
+  @override
+  Widget build(BuildContext context) {
+    // Watch for changes to the TaskProvider
+    final taskProvider = context.watch<TaskProvider>();
+    // Get the list of tasks from the provider
+    final tasks = taskProvider.tasks;
+
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) {
+        // Call the provider method to handle reordering the list
+        context.read<TaskProvider>().reorderTask(oldIndex, newIndex);
+      },
+      // Build each list item with a key and a TaskItem
+      children: [
+        for (int i = 0; i < tasks.length; i++)
+          ListTile(
+            key: ValueKey(tasks[i]),  // A key helps Flutter track each item
+            title: TaskItem(index: i), 
           ),
-        ),
-    ],
-  );
-}
+      ],
+    );
+  }
 }
