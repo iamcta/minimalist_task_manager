@@ -4,7 +4,7 @@ import '../../utils/global_styles.dart';
 class AddTaskForm extends StatelessWidget {
   final Function(String taskName) onAddTask;
 
-  AddTaskForm({required this.onAddTask});
+  AddTaskForm({super.key, required this.onAddTask});
 
   final _controller = TextEditingController();
 
