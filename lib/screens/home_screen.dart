@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/task_list.dart';
-import '../widgets/add_task_form.dart';
+import '../../widgets/task_list.dart';
+import '../../widgets/add_task_form.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

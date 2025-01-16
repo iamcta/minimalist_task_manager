@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/global_styles.dart';
+import '../../utils/global_styles.dart';
 
 class TaskItem extends StatelessWidget {
   final String taskName;

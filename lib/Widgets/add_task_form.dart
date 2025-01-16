@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/global_styles.dart';
+import '../../utils/global_styles.dart';
 
 class AddTaskForm extends StatelessWidget {
   final Function(String taskName) onAddTask;
